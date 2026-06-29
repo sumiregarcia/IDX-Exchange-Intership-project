@@ -41,8 +41,8 @@ A 12-week data analytics pipeline focused on transforming raw real estate MLS tr
 ### Week 1 Concatenation & Filter Summary
 | Dataset | Pre-Filter Row Count | Post-Residential Filter Row Count | Notes |
 | :--- | :--- | :--- | :--- |
-| **Sold Transactions** | *[x]* | *[x]* | Successfully filtered out commercial/land rentals |
-| **Active Listings** | *[x]* | *[x]* | Successfully filtered out commercial/land rentals |
+| **Sold Transactions** | *681,599* | *458,336* | Successfully filtered out commercial/land rentals |
+| **Active Listings** | *866,140* | *550,542* | Successfully filtered out commercial/land rentals |
 
 ---
 
