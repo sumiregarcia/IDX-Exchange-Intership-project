@@ -23,9 +23,6 @@ Loaded all monthly CSVs with `glob`, concatenated them, filtered to `PropertyTyp
 | Rows before filter | 681,599 | 866,140 |
 | Rows after filter | 458,336 | 550,542 |
 
-> **Note:** Several Sold months have both a base file and a `_filled` variant (e.g. `CRMLSSold202401.csv` + `CRMLSSold202401_filled.csv`). Both were loaded — duplicates will be removed by `ListingKey` before Week 6.
-> Listing coverage starts February 2024 — January 2024 file was not available.
-
 ---
 
 ## Week 2: Dataset Structuring and Validation
@@ -77,7 +74,6 @@ Converted dates to datetime, enforced numeric types, flagged invalid values, and
 | Missing coordinates | 16,027 (3.5%) | 76,280 (13.9%) |
 | Positive longitude (wrong for CA) | 33 | 76 |
 
-> **Note – Listing missing coordinates:** 76,280 records (13.9%) have no lat/lon — likely Active/Pending listings where agents haven't entered coordinates yet. Usable for price/supply analysis; will show gaps in map visualizations in Weeks 8–10.
 
 ---
 
