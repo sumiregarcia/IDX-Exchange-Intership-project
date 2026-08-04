@@ -76,9 +76,51 @@ Converted dates to datetime, enforced numeric types, flagged invalid values, and
 
 
 ---
+## Week 6 – Feature Engineering and Market Metrics
+Created calculated columns that don't exist in the raw data but are needed for the dashboards.
 
+**Metrics added (Sold):**
+| Column | Formula | What it tells you |
+|---|---|---|
+| `price_ratio` | `ClosePrice / OriginalListPrice` | >1.0 = sold over asking, <1.0 = came down |
+| `price_per_sqft` | `ClosePrice / LivingArea` | Normalizes price so a 900 sq ft condo and 2,500 sq ft house are comparable |
+| `listing_to_contract_days` | `PurchaseContractDate - ListingContractDate` | How long until an offer was accepted |
+| `contract_to_close_days` | `CloseDate - PurchaseContractDate` | Escrow duration |
+| `close_year` / `close_month` / `close_yrmo` | Derived from `CloseDate` | Time series grouping keys for Tableau trend lines |
+
+**Listing:** Added `list_year`, `list_month`, `list_yrmo` from `ListingContractDate` for supply trend analysis.
+
+**School district join:** Matched each property's lat/lon against the California Department of Education 2025-26 school district boundary map using a spatial join (`geopandas`). Added `school_district` and `school_district_type` columns. Records missing coordinates (13.9% of Listing, 3.5% of Sold) do not receive a district assignment.
+
+**Segment summaries saved:** `sold_segment_by_subtype.csv`, `sold_segment_by_county.csv` — median close price, median PPSF, median DOM, and median price ratio grouped by property subtype and county.
+
+**Output files:** `sold_features.csv`, `listing_features.csv`
+
+---
+
+## Week 7 – Outlier Detection and Removal (IQR Method)
+Applied the **Interquartile Range (IQR)** method to flag statistical outliers on four key fields before loading into Tableau.
+
+**How IQR works:** Q1 is the 25th percentile, Q3 is the 75th. The IQR is the distance between them — the middle 50% of the data. Any value more than 1.5× the IQR above Q3 or below Q1 is flagged as an outlier. The bounds are calculated from the data itself, so they adjust automatically as new months are added.
+
+**IQR bounds applied (Sold):**
+| Field | Lower Bound | Upper Bound | Records Flagged |
+|---|---|---|---|
+| `ClosePrice` | ~-$557K (effectively $0) | ~$2.48M | ~7.7% |
+| `LivingArea` | ~0 sq ft | ~3,747 sq ft | ~4.1% |
+| `DaysOnMarket` | 0 days | ~100 days | ~10.5% |
+| `price_per_sqft` | ~$0 | ~$1,285/sq ft | ~4.4% |
+
+Records flagged on **any** of these fields are excluded from the Tableau-ready file. The full flagged file is also saved so nothing is permanently lost.
+
+**Results:**
+- Sold: `sold_features.csv` → `sold_tableau_ready.csv`
+- Listing: `listing_features.csv` → `listing_tableau_ready.csv`
+- Median ClosePrice is essentially unchanged after filtering — confirms only true extremes were removed, not real market transactions.
+
+**Output files:** `sold_w7_flagged.csv`, `sold_tableau_ready.csv`, `listing_w7_flagged.csv`, `listing_tableau_ready.csv`
+
+---
 ## Up Next
-- **Week 6** – Feature engineering: price ratio, price per sq ft, listing-to-contract days, contract-to-close days, YrMo
-- **Week 7** – IQR outlier removal, final analysis-ready datasets
-- **Weeks 8–10** – Tableau dashboards
-- **Weeks 11–12** – Market intelligence report and presentation
+- **Weeks 8–10** – Tableau dashboard development
+- **Weeks 11–12** – Market intelligence report and final presentation
