@@ -119,8 +119,20 @@ Records flagged on **any** of these fields are excluded from the Tableau-ready f
 - Median ClosePrice is essentially unchanged after filtering — confirms only true extremes were removed, not real market transactions.
 
 **Output files:** `sold_w7_flagged.csv`, `sold_tableau_ready.csv`, `listing_w7_flagged.csv`, `listing_tableau_ready.csv`
+## Week 8 â€“ Tableau Export: Build Combined Dataset
+Combined `sold_tableau_ready.csv` and `listing_tableau_ready.csv` into a single file (`combined_tableau_ready.csv`) so Tableau only needs one data source.
 
+Two columns added:
+- `source` â€” `'Sold'` or `'Listing'` on every row, used as a sheet-level filter in Tableau
+- `date` â€” `CloseDate` for Sold rows, `ListingContractDate` for Listing rows â€” one consistent time axis
+- `yrmo` â€” year-month string (e.g. `2024-06`) derived from `date`, used on the columns shelf for all trend charts
+
+Columns that only exist in Sold (`PoolPrivateYN`, `ViewYN`, `Flooring`, etc.) are null for Listing rows â€” expected behavior since those fields were never in the Listing export.
+
+**Output:** `combined_tableau_ready.csv` â€” this is the only file loaded into Tableau for all dashboards.
+
+**In Tableau:** filter any sheet to `source = Sold` or `source = Listing` as needed. Use `yrmo` on the time axis. One filter pill set to "Apply to All Worksheets" controls every chart on a dashboard simultaneously.
 ---
 ## Up Next
-- **Weeks 8–10** – Tableau dashboard development
+- **Weeks 9–10** – Tableau dashboard development
 - **Weeks 11–12** – Market intelligence report and final presentation
