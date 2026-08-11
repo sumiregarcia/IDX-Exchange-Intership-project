@@ -124,12 +124,12 @@ Combined `sold_tableau_ready.csv` and `listing_tableau_ready.csv` into a single 
 
 Two columns added:
 - `source`: ”`'Sold'` or `'Listing'` on every row, used as a sheet-level filter in Tableau
-- `date` : "`CloseDate` for Sold rows, `ListingContractDate` for Listing rows â€” one consistent time axis
+- `date` : "`CloseDate` for Sold rows, `ListingContractDate` for Listing rows” one consistent time axis
 - `yrmo` : ” year-month string (e.g. `2024-06`) derived from `date`, used on the columns shelf for all trend charts
 
-Columns that only exist in Sold (`PoolPrivateYN`, `ViewYN`, `Flooring`, etc.) are null for Listing rows â€” expected behavior since those fields were never in the Listing export.
+Columns that only exist in Sold (`PoolPrivateYN`, `ViewYN`, `Flooring`, etc.) are null for Listing rows” expected behavior since those fields were never in the Listing export.
 
-**Output:** `combined_tableau_ready.csv` â€” this is the only file loaded into Tableau for all dashboards.
+**Output:** `combined_tableau_ready.csv`– this is the only file loaded into Tableau for all dashboards.
 
 **In Tableau:** filter any sheet to `source = Sold` or `source = Listing` as needed. Use `yrmo` on the time axis. One filter pill set to "Apply to All Worksheets" controls every chart on a dashboard simultaneously.
 
